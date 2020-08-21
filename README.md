@@ -1,14 +1,18 @@
 # hoursofsunlight
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to calculate hours of sunlight for a given date and location.
 
 ## Usage
 
-FIXME
+The main method in core can be modified to create CSV for the city of your choice.
+
+For example: Banff at the latitude of 51.1784 in the year of 2021
+
+  (createCsvForCity "Banff" 51.1784 2021)
 
 ## License
 
-Copyright © 2020 FIXME
+Copyright © 2020 Tze Ken Soh
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
