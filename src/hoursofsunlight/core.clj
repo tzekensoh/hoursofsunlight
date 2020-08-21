@@ -21,6 +21,7 @@
         ; get the first or last element depending on Summer or Winter
         [day hours] (nth sortedDaysWithHOS (seasonIndexes (keyword season)))
         ]
+    (println city mappedDaysWithHOS)
     [(str season " solstice day") (str year "/" seasonMonth "/" day) hours (hc/toHMS hours) ]
     )
   )
@@ -43,9 +44,10 @@
   )
 
 (defn -main []
-  (createCsvForCity "PaloAlto" 37.4419 2021)
+  (createCsvForCity "PaloAlto" 37.468319 2021)
   (createCsvForCity "Edinburgh" 55.95 2020)
   (createCsvForCity "HongKong" 22.3193 2020)
+  (createCsvForCity "Banff" 51.1784 2021)
   )
 
 (-main)

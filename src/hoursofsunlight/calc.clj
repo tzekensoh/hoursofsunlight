@@ -34,7 +34,7 @@
   "Calculate the hours of sunlight for the location on the given latitude and date"
   [lat year month day]
   (let [h (ha lat year month day)]
-    (/ (* 2 (Math/toDegrees h)) 15 )
+    (/ (* 2.0 (Math/toDegrees h)) 15.0 )
     )
   )
 
