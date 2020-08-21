@@ -1,6 +1,7 @@
 (ns hoursofsunlight.calc)
 
-(require '[clj-time.core :as t])
+(require '[clj-time.core :as t]
+         '[clj-time.format :as f])
 
 (defn ndays
   "Calculate the number of days since Jan 1st of the same year"
@@ -46,3 +47,9 @@
         ss (* 60 (- mi m))
         s (Math/round ss)]
     (str (int h)  ":" (int m)  ":" (int s) )))
+
+(defn toMonthName
+  "Convert from number to English month name"
+  [m]
+  (f/unparse (f/formatter "MMM") (t/date-time 1972 m 1))
+  )
