@@ -2,11 +2,15 @@
 
 (require '[clj-time.core :as t])
 
-(defn ndays [year month day]
+(defn ndays
+  "Calculate the number of days since Jan 1st of the same year"
+  [year month day]
   (t/in-days (t/interval  (t/date-time year 1 1)  (t/date-time year month day))))
 
 
-(defn declin [year month day]
+(defn declin
+  "Calculate the declination of the Sun, perpendicular to the Earth's orbit."
+  [year month day]
   (* -1
      (Math/asin
        (* 0.39779
@@ -15,7 +19,9 @@
      )
   )
 
-(defn ha [lat year month day]
+(defn ha
+  "Calculate the hour angle"
+  [lat year month day]
   (let [d (declin year month day)]
     (Math/acos
       (- (/ (Math/cos (Math/toRadians 90.833)) (* (Math/cos (Math/toRadians lat)) (Math/cos d)))
@@ -23,8 +29,20 @@
 
   )
 
-(defn hoursofsunlight [lat year month day]
+(defn hoursofsunlight
+  "Calculate the hours of sunlight for the location on the given latitude and date"
+  [lat year month day]
   (let [h (ha lat year month day)]
     (/ (* 2 (Math/toDegrees h)) 15 )
     )
   )
+
+(defn toHMS
+  "Convert hours from decimal to HMS format"
+  [hr]
+  (let [h (Math/floor hr)
+        mi (* 60 (- hr h))
+        m (Math/floor mi)
+        ss (* 60 (- mi m))
+        s (Math/round ss)]
+    (str (int h)  ":" (int m)  ":" (int s) )))
