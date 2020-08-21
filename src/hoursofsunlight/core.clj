@@ -4,21 +4,21 @@
          '[clojure.data.csv :as csv]
          '[clojure.java.io :as io])
 
-(defn summerSolstice
-  "Try 20 21 22 of the month and return the largest"
-  [city lat year]
-  (let [days (range 20 23)
-        daysWithHOS (map #(hc/hoursofsunlight lat year 6 %) days)
+(defn solstice
+  "Try 20 21 22 of the month and return the largest for Summer and smallest for Winter"
+  [city lat year season]
+  (let [seasonMonths {:summer 6 :winter 12}
+        seasonIndexes {:summer 0 :winter 2}
+        days (range 20 23)
+        seasonMonth (seasonMonths (keyword season))
+        daysWithHOS (map #(hc/hoursofsunlight lat year seasonMonth %) days)
         mappedDaysWithHOS (map vector days daysWithHOS)
         sortedDaysWithHOS (sort (fn [p1 p2] (let [[v11 v12] p1
-                                                  [v21 v22] p2] (compare v22 v12))) mappedDaysWithHOS)]
-    ;(println city sortedDaysWithHOS)
-    ;(println city (nth sortedDaysWithHOS 0))
-    ;; sorted from longest day to shortest day
-    (nth sortedDaysWithHOS 0)
+                                                  [v21 v22] p2] (compare v22 v12))) mappedDaysWithHOS)
+        [day hours] (nth sortedDaysWithHOS (seasonIndexes (keyword season)))
+        ]
+    [(str season " solstice day") (str year "/" seasonMonth "/" day) hours (hc/toHMS hours) ]
     )
-  ; [(str year "-June-" 20) ]
-
   )
 
 (defn createCsvForCity
@@ -32,15 +32,20 @@
                      [months
                       hoursindecimals
                       hms
-                      (summerSolstice city lat year)])))
+                      (solstice city lat year "summer")
+                      (solstice city lat year "winter")
+                      ])))
+
   )
 
 (defn -main []
-  (createCsvForCity "PaloAlto" 37.4419 2020)
+  (createCsvForCity "PaloAlto" 37.4419 2021)
   (createCsvForCity "Edinburgh" 55.95 2020)
   (createCsvForCity "HongKong" 22.3193 2020)
   )
 
 (-main)
-(hc/toHMS (hc/hoursofsunlight 37.4419 2020 8 21))
-(hc/hoursofsunlight 55.95 2019 7 1)
+(hc/toHMS (hc/hoursofsunlight 37.4419 2020 12 21))
+(hc/hoursofsunlight 55.95 2020 12 20)
+(hc/hoursofsunlight 55.95 2020 12 21)
+(hc/hoursofsunlight 55.95 2020 12 22)
