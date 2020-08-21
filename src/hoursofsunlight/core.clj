@@ -8,9 +8,14 @@
   "Try 20 21 22 of the month and return the largest"
   [city lat year]
   (let [days (range 20 23)
-        daysWithHOS (map #(hc/hoursofsunlight lat year 6 %) days)]
-    daysWithHOS
-
+        daysWithHOS (map #(hc/hoursofsunlight lat year 6 %) days)
+        mappedDaysWithHOS (map vector days daysWithHOS)
+        sortedDaysWithHOS (sort (fn [p1 p2] (let [[v11 v12] p1
+                                                  [v21 v22] p2] (compare v22 v12))) mappedDaysWithHOS)]
+    ;(println city sortedDaysWithHOS)
+    ;(println city (nth sortedDaysWithHOS 0))
+    ;; sorted from longest day to shortest day
+    (nth sortedDaysWithHOS 0)
     )
   ; [(str year "-June-" 20) ]
 
